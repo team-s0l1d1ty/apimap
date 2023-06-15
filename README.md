@@ -63,6 +63,27 @@ requests:
 ## Contributions and Feedback
 Contributions and feedback are highly encouraged to enhance the functionality and effectiveness of APIMAP. Users are encouraged to actively participate by forking the repository, making modifications and submitting pull requests. Feedback, bug reports and feature requests can be shared through the repository's issue tracker. 
 
+### Folder Structure
+The follwing is the folder structure for reference:
+- Controller contains all the logic of the application
+- CLI contains the code regarding the CLI
+- Templates is for storing YAML templates.  
+
+```
+.
+├── apimap.py
+├── CLI
+│   ├── cli.py
+├── Controller            
+│   ├── Request                
+│   ├── Response
+│   ├── Authentication                
+│   └── Generator
+├── Templates             
+├── LICENSE
+└── README.md
+```
+
 ## License
 APIMAP is released under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). This open-source license grants users the freedom to use, modify, and distibute the software while ensuring that any modifications remain open-source. It is essential to review and adhere to the license terms and conditions when utilizing and modifying the tool.
 

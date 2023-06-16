@@ -1,4 +1,4 @@
-# APIMAP
+# APIMAP {Work In Progress}
 
 ░█████╗░██████╗░██╗███╗░░░███╗░█████╗░██████╗░
 ██╔══██╗██╔══██╗██║████╗░████║██╔══██╗██╔══██╗
@@ -7,7 +7,7 @@
 ██║░░██║██║░░░░░██║██║░╚═╝░██║██║░░██║██║░░░░░
 ╚═╝░░╚═╝╚═╝░░░░░╚═╝╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░░░░
 
-APIMAP is a python based tool designed to automate API security testing. It utilizes YAML as the scanning template for defining security checks and tests against target APIs. This scanner is targeted but not limited to API security testing and aims to be the python alternative to tools like Nuclei. It allows user to easily generate YAML templates using OpenAPI Specifications and Postman Collections.
+APIMAP is a python based tool designed to automate API security testing. It utilizes YAML as the scanning template for defining security checks and tests against target APIs. This scanner is targeted but not limited to API security testing and aims to be the python HTTP scanner. It allows user to easily generate YAML templates using OpenAPI Specifications and Postman Collections.
 
 ## Key Features
 1. **YAML Scanning Template** : APIMAP leverages YAML-based scanning templates allowing users to customise their own security checks and tests.
@@ -15,20 +15,28 @@ APIMAP is a python based tool designed to automate API security testing. It util
 3. **Python Implementation** 
 4. **API Specific** : APIMAP is developed with API Security Testing in mind and the basic scanning templates is created based on [OWASP Top 10 API Security Risks – 2019](https://owasp.org/API-Security/editions/2019/en/0x11-t10/).
 
-### Features Roadmap
-- [x] Read yaml from file or directory
-- [x] Send basic request(s) based on yaml configuration 
-- [ ] Authentication Automation Logic  
-- [ ] Response checking logic based on yaml configuration
-- [ ] Skeleton templates that covers OWASP Top 10 API Security Risks – 2019
-   - [ ] BOLA 
-   - [ ] ...
-- [ ] Template generation using on OpenAPI Specification that includes OWASP Top 10 Checks
-   - [ ] BOLA
-   - [ ] ...
-- [ ] Template generation using on Postman Collection that includes OWASP Top 10 Checks
-   - [ ] BOLA
-   - [ ] ...
+### Roadmap
+#### Stage 1 [Envisioned Usage]
+- [ ] CLI 
+   - [ ] cli.py
+- [ ] Generator
+   - [ ] swg.py (generates yaml based on swagger documentation)
+   - [ ] auth.py (generates yaml to be used for authentication)
+- [ ] Authentication
+   - [ ] auth.py (sends authentication requests)
+- [ ] Request 
+   - [ ] request.py
+   - [ ] response.py
+   - [ ] handler.py
+
+#### Stage 2 [Expanded Capabilities]
+- [ ] Generator
+   - [ ] psm.py
+- [ ] Authentication
+   - [ ] more authentication methods (TBA)
+
+#### Stage 3 [QoL Improvements]
+- [ ] TBA
 
 ## Installation and Basic Usage
 ### Dependencies
@@ -36,21 +44,35 @@ APIMAP is a python based tool designed to automate API security testing. It util
 pip install pyyaml requests argparse
 ```
 
-### Usage
-** Getting help message**
-```
-python3 apimap.py -h
-python3 apimap.py req -h
-python3 apimap.py gen -h
+### Envisioned Usage
+#### To Execute Test
+Step 1 : generate YAML template 
+
+``` 
+python apimap.py gen swg bola {openapi specs}
 ```
 
-**Executing Template**
+Step 2 : generate authentication token
+
 ```
-python3 req {path to yaml file/folder}
+python apimap.py gen auth jwt 
 ```
+
+Step 3 : Executing the test 
+
+```
+python apimap.py req {path to req testing template} {path to auth file} {output folder}
+```
+
+#### To get an Inventory based on openAPI specs or postman collection
+```
+# for swagger doc
+python apimap.py gen swg inv {path to specs}
+``` 
 
 ### Writing Template
 Template conforms to all the parameters used in `Requests` library. Shown below are simple `GET` requests.
+#### Sending GET requests
 ```
 requests:
   - url: https://github.com
@@ -60,26 +82,37 @@ requests:
     method: GET
 ```
 
+#### Sending GET requests with Proxy
+```
+In Progress
+```
+
 ## Contributions and Feedback
 Contributions and feedback are highly encouraged to enhance the functionality and effectiveness of APIMAP. Users are encouraged to actively participate by forking the repository, making modifications and submitting pull requests. Feedback, bug reports and feature requests can be shared through the repository's issue tracker. 
 
 ### Folder Structure
-The follwing is the folder structure for reference:
-- Controller contains all the logic of the application
-- CLI contains the code regarding the CLI
-- Templates is for storing YAML templates.  
+The follwing is the folder structure for more clarity:
 
 ```
 .
 ├── apimap.py
 ├── CLI
-│   ├── cli.py
+│    └── cli.py
 ├── Controller            
-│   ├── Request                
-│   ├── Response
-│   ├── Authentication                
-│   └── Generator
-├── Templates             
+│    ├── Generator
+|    |    ├── swg.py (stage 1)
+|    |    ├── psm.py (stage 2)
+|    |    ├── inv.py (stage 2)
+|    |    └── auth.py (stage 1)     
+|    └── Request        
+|         ├── request.py  (stage 1)
+|         ├── response.py (stage 1)    
+|         ├── Authentication
+|         |    └── auth.py (stage 1)   
+|         └── Test
+|              └── handler.py (stage 1) 
+├── Templates
+|    └── skeleton_template.yaml
 ├── LICENSE
 └── README.md
 ```

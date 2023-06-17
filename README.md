@@ -17,8 +17,10 @@ APIMAP is a python based tool designed to automate API security testing. It util
 
 ### Roadmap
 #### Stage 1 [Envisioned Usage]
-- [ ] CLI 
-   - [ ] cli.py
+- [x] CLI 
+   - [x] cli.py (able to parse dictionary to generate the CLI)
+   - [x] handler.py (part 1 : able to parse dictionary to handle commands and subcommands)
+   - [ ] handler.py (part 2 : created dummy handlers, will include actual handlers once the functions are ready)
 - [ ] Generator
    - [ ] swg.py (generates yaml based on swagger documentation)
    - [ ] basic_login (generates yaml to be used for authentication)

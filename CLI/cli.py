@@ -1,62 +1,123 @@
 import argparse
 import os
 
+# Define the command structure dictionary
+commands = {
+    'req': {
+        'help': 'Send requests using YAML template',
+        'args': {
+            'template': {
+                'help': 'Path to the YAML template file or directory',
+                'type': str
+            }
+        }
+    },
+    'auth': {
+        'help': 'sends authentication requests',
+        'subcommands': {
+            'jwt': {
+                'help': 'sends auth.yaml and extracts jwt token',
+                'args': {
+                    'auth_yaml': {
+                        'help': 'Username for authentication',
+                        'type': str
+                    }
+                }
+            },
+            'cookie': {
+                'help': 'sends auth.yaml and extracts cookies',
+                'args': {
+                    'auth_yaml': {
+                        'help': 'Username for authentication',
+                        'type': str
+                    }
+                }
+            }
+        }
+    },
+    'gen': {
+        'help': 'YAML generation operations',
+        'subcommands': {
+            'auth': {
+                'help': 'Generate authentication',
+                'subcommands': {
+                    'jwt': {
+                        'help': 'Generate YAML to request and extract JWT',
+                        'args': {
+                            'username': {
+                                'help': 'Username for authentication',
+                                'type': str
+                            },
+                            'password': {
+                                'help': 'Password for authentication',
+                                'type': str
+                            }
+                        }
+                    },
+                    'cookie': {
+                        'help': 'Generate YAML to request and extract cookie',
+                        'args': {
+                            'username': {
+                                'help': 'Username for authentication',
+                                'type': str
+                            },
+                            'password': {
+                                'help': 'Password for authentication',
+                                'type': str
+                            }
+                        }
+                    }
+                }
+            },
+            'swg': {
+                'help': 'Generate Command for Swagger',
+                'subcommands': {
+                    'bola': {
+                        'help': 'Generate BOLA YAML based on Swagger',
+                        'args': {
+                            'path': {
+                                'help': 'Path for Swagger BOLA generation',
+                                'type': str
+                            }
+                        }
+                    },
+                    'inv': {
+                        'help': 'Generate Swagger inventory for swagger',
+                        'args': {
+                            'path': {
+                                'help': 'Path to swagger documentation',
+                                'type': str
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+def generate_args(args_dict, subparser):
+    if 'subcommands' in args_dict:
+        subparsers_sub = subparser.add_subparsers(dest='subcommand', title='subcommands')
+        for subcommand, subcommand_dict in args_dict['subcommands'].items():
+            subparser_sub = subparsers_sub.add_parser(subcommand, help=subcommand_dict['help'])
+            generate_args(subcommand_dict, subparser_sub)
+    if 'args' in args_dict:
+        for arg, arg_dict in args_dict['args'].items():
+            subparser.add_argument(arg, **arg_dict)
+
 def parse_arguments():
     parser = argparse.ArgumentParser(description='APIMAP')
 
     subparsers = parser.add_subparsers(title='subcommands', dest='command')
     subparsers.required = True
 
-    '''
-    req subcommand parser
-    '''
-    req_parser = subparsers.add_parser('req', help='Send requests using YAML template')
-    req_parser.add_argument('template', help='Path to the YAML template file or directory')
-
-    '''
-    auth subcommand parser
-    '''
-    auth_parser = subparsers.add_parser('auth', help='sends authentication requests')
-    auth_parser.add_argument('auth_yaml', help='Path to the Auth YAML template file')
-
-    '''
-    gen subcommand parser
-    '''  
-    gen_parser = subparsers.add_parser('gen', help='YAML generation operations')
-    gen_subparsers = gen_parser.add_subparsers(dest='gen_command', title='Generate commands')
-
-    # gen auth subcommand parser
-    auth_parser = gen_subparsers.add_parser('auth', help='Generate authentication')
-    auth_subparsers = auth_parser.add_subparsers(dest='auth_command', title='Authentication commands')
-
-    jwt_parser = auth_subparsers.add_parser('jwt', help='Generate YAML to request and extract JWT')
-    jwt_parser.add_argument('username', type=str, help='Username for authentication')
-    jwt_parser.add_argument('password', type=str, help='Password for authentication')
-
-    cookie_parser = auth_subparsers.add_parser('cookie', help='Generate YAML to request and extract cookie')
-    cookie_parser.add_argument('username', type=str, help='Username for authentication')
-    cookie_parser.add_argument('password', type=str, help='Password for authentication')
-
-    # gen swg subcommand parser
-    swg_parser = gen_subparsers.add_parser('swg', help='Generate Command for Swagger')
-    swg_subparsers = swg_parser.add_subparsers(dest='swg_command', title='Swagger commands')
-
-    bola_parser = swg_subparsers.add_parser('bola', help='Generate BOLA YAML based on Swagger')
-    bola_parser.add_argument('path', type=str, help='Path for Swagger BOLA generation')
-
-    inv_parser = swg_subparsers.add_parser('inv', help='Generate Swagger inventory for swagger')
-    inv_parser.add_argument('path', type=str, help='path to swagger documentation')
+    # Generate the command-line arguments based on the dictionary
+    for command, command_dict in commands.items():
+        command_parser = subparsers.add_parser(command, help=command_dict['help'])
+        generate_args(command_dict, command_parser)
 
     return parser.parse_args()
-
-def command_mapping():
-   command_mapping = {
-      'jwt': 'generate_auth_jwt',
-      'cookie': 'generate_auth_cookie',
-      'bola': 'generate_swagger_bola',
-      'inv': 'generate_swagger_inv',
-    }
-   return command_mapping 
 
 def validate_arguments(args):
     if args.command == 'req':
@@ -67,3 +128,7 @@ def validate_arguments(args):
     elif args.command == 'auth':
         if not os.path.isfile(args.auth_yaml):
             raise ValueError(f"Invalid path: {args.auth_yaml}. file not found.")
+
+if __name__ == '__main__':
+    args = parse_arguments()
+    print(args)

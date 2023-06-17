@@ -9,9 +9,16 @@ def main():
     if args.command == 'req':
         Controller.Request.request.send_requests(args.template)
     elif args.command == 'gen':
-        print("Generating YAML from Swagger and Postman files...")
-        print("Swagger file:", args.swagger)
-        print("Postman file:", args.postman)
+       command_mapping = cli.command_mapping()
+       if args.gen_command in command_mapping:
+             func = command_mapping[args.gen_command]
+             arguments = vars(args)
+             del arguments['command']
+             del arguments['gen_command']
+             func(**arguments)
+    elif args.command == 'auth':
+         pass
+
 
 def printBanner():
 	print("""

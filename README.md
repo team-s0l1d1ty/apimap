@@ -21,7 +21,7 @@ APIMAP is a python based tool designed to automate API security testing. It util
    - [ ] cli.py
 - [ ] Generator
    - [ ] swg.py (generates yaml based on swagger documentation)
-   - [ ] auth.py (generates yaml to be used for authentication)
+   - [ ] basic_login (generates yaml to be used for authentication)
 - [ ] Authentication
    - [ ] auth.py (sends authentication requests)
 - [ ] Request 
@@ -49,7 +49,7 @@ pip install pyyaml requests argparse
 Step 1 : generate YAML template 
 
 ``` 
-python apimap.py gen swg bola {openapi specs}
+python apimap.py gen swg bola {/path/to/openapi specs}
 ```
 
 Step 2 : generate authentication token
@@ -58,10 +58,16 @@ Step 2 : generate authentication token
 python apimap.py gen auth jwt 
 ```
 
-Step 3 : Executing the test 
+Step 3 : generate jwt token based on auth yaml
 
 ```
-python apimap.py req {path to req testing template} {path to auth file} {output folder}
+python apimap.py req auth {path/to/auth.yaml} {dest/path/auth_token}
+```
+
+Step 4 : Executing the test 
+
+```
+python apimap.py req {path to req testing template} {path to auth_token} {output folder}
 ```
 
 #### To get an Inventory based on openAPI specs or postman collection
@@ -103,7 +109,8 @@ The follwing is the folder structure for more clarity:
 |    |    ├── swg.py (stage 1)
 |    |    ├── psm.py (stage 2)
 |    |    ├── inv.py (stage 2)
-|    |    └── auth.py (stage 1)     
+|    |    └── Authentication
+|    |    |    └── basic_login.py (stage 1)     
 |    └── Request        
 |         ├── request.py  (stage 1)
 |         ├── response.py (stage 1)    

@@ -1,5 +1,6 @@
+import os
 import Controller.Request.request
-import Controller.Generator
+import Controller.Generator.swg
 
 def handle_req(args):
     Controller.Request.request.send_requests(args.template)
@@ -27,7 +28,9 @@ def handle_gen_swg_bola(args):
 
 def handle_gen_swg_inv(args):
     path = args.path
-    print(path)
+    if os.path.isfile(path):
+        Controller.Generator.swg.swg_inv(path)
+    
 
 def handle_commands(args):
     command_handlers = {

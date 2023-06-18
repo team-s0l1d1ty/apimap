@@ -1,5 +1,4 @@
 import argparse
-import os
 
 # Define the command structure dictionary
 commands = {
@@ -118,16 +117,6 @@ def parse_arguments():
         generate_args(command_dict, command_parser)
 
     return parser.parse_args()
-
-def validate_arguments(args):
-    if args.command == 'req':
-        if os.path.isfile(args.template) or os.path.isdir(args.template):
-            return
-        else:
-            raise ValueError(f"Invalid path: {args.template}. File or directory not found.")
-    elif args.command == 'auth':
-        if not os.path.isfile(args.auth_yaml):
-            raise ValueError(f"Invalid path: {args.auth_yaml}. file not found.")
 
 if __name__ == '__main__':
     args = parse_arguments()

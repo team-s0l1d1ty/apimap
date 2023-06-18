@@ -16,7 +16,6 @@ def printBanner():
 def main():
     printBanner()
     args = cli.parse_arguments()
-    cli.validate_arguments(args)
     handler.handle_commands(args)
 
 if __name__ == '__main__':

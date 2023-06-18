@@ -12,119 +12,13 @@ APIMAP is a python based tool designed to automate API security testing. It util
 ## Key Features
 1. **YAML Scanning Template** : APIMAP leverages YAML-based scanning templates allowing users to customise their own security checks and tests.
 2. **OpenAPI and Postman Collection Support** : APIMAP has a template generation module that can generate basic YAML scanning template using OpenAPI specification or Postman Collections JSON. 
-3. **Python Implementation** 
-4. **API Specific** : APIMAP is developed with API Security Testing in mind and the basic scanning templates is created based on [OWASP Top 10 API Security Risks – 2019](https://owasp.org/API-Security/editions/2019/en/0x11-t10/).
+3. **API Specific** : APIMAP is developed with API Security Testing in mind and the basic scanning templates is created based on [OWASP Top 10 API Security Risks – 2019](https://owasp.org/API-Security/editions/2019/en/0x11-t10/).
 
-### Roadmap
-#### Stage 1 [Envisioned Usage]
-- [x] CLI 
-   - [x] cli.py (able to parse dictionary to generate the CLI)
-   - [x] handler.py (part 1 : able to parse dictionary to handle commands and subcommands)
-   - [ ] handler.py (part 2 : created dummy handlers, will include actual handlers once the functions are ready)
-- [ ] Generator
-   - [ ] swg.py (generates yaml based on swagger documentation)
-   - [ ] basic_login (generates yaml to be used for authentication)
-- [ ] Authentication
-   - [ ] auth.py (sends authentication requests)
-- [ ] Request 
-   - [ ] request.py
-   - [ ] response.py
-   - [ ] handler.py
-
-#### Stage 2 [Expanded Capabilities]
-- [ ] Generator
-   - [ ] psm.py
-- [ ] Authentication
-   - [ ] more authentication methods (TBA)
-
-#### Stage 3 [QoL Improvements]
-- [ ] TBA
-
-## Installation and Basic Usage
-### Dependencies
-```
-pip install pyyaml requests argparse
-```
-
-### Envisioned Usage
-#### To Execute Test
-Step 1 : generate YAML template 
-
-``` 
-python apimap.py gen swg bola {/path/to/openapi specs}
-```
-
-Step 2 : generate authentication token
-
-```
-python apimap.py gen auth jwt 
-```
-
-Step 3 : generate jwt token based on auth yaml
-
-```
-python apimap.py req auth {path/to/auth.yaml} {dest/path/auth_token}
-```
-
-Step 4 : Executing the test 
-
-```
-python apimap.py req {path to req testing template} {path to auth_token} {output folder}
-```
-
-#### To get an Inventory based on openAPI specs or postman collection
-```
-# for swagger doc
-python apimap.py gen swg inv {path to specs}
-``` 
-
-### Writing Template
-Template conforms to all the parameters used in `Requests` library. Shown below are simple `GET` requests.
-#### Sending GET requests
-```
-requests:
-  - url: https://github.com
-    method: GET
-
-  - url: https://google.com
-    method: GET
-```
-
-#### Sending GET requests with Proxy
-```
-In Progress
-```
+## Installation and Usage
+See [Installation and Usage](https://github.com/team-s0l1d1ty/apimap/wiki/Installation-and-Usage)
 
 ## Contributions and Feedback
-Contributions and feedback are highly encouraged to enhance the functionality and effectiveness of APIMAP. Users are encouraged to actively participate by forking the repository, making modifications and submitting pull requests. Feedback, bug reports and feature requests can be shared through the repository's issue tracker. 
-
-### Folder Structure
-The follwing is the folder structure for more clarity:
-
-```
-.
-├── apimap.py
-├── CLI
-│    └── cli.py
-├── Controller            
-│    ├── Generator
-|    |    ├── swg.py (stage 1)
-|    |    ├── psm.py (stage 2)
-|    |    ├── inv.py (stage 2)
-|    |    └── Authentication
-|    |    |    └── basic_login.py (stage 1)     
-|    └── Request        
-|         ├── request.py  (stage 1)
-|         ├── response.py (stage 1)    
-|         ├── Authentication
-|         |    └── auth.py (stage 1)   
-|         └── Test
-|              └── handler.py (stage 1) 
-├── Templates
-|    └── skeleton_template.yaml
-├── LICENSE
-└── README.md
-```
+Contributions and feedback are highly encouraged to enhance the functionality and effectiveness of APIMAP. Users are encouraged to actively participate by forking the repository, making modifications and submitting pull requests. Feedback, bug reports and feature requests can be shared through the repository's issue tracker. See [Contributor's Guide](https://github.com/team-s0l1d1ty/apimap/wiki/Contributor's-Guide)
 
 ## License
 APIMAP is released under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). This open-source license grants users the freedom to use, modify, and distibute the software while ensuring that any modifications remain open-source. It is essential to review and adhere to the license terms and conditions when utilizing and modifying the tool.

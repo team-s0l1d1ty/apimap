@@ -1,12 +1,11 @@
-import Controller.Request
+import Controller.Request.request
 import Controller.Generator
 
 def handle_req(args):
-    print(args.template)
+    Controller.Request.request.send_requests(args.template)
 
 def handle_auth_jwt(args):
-    auth = args.auth_yaml
-    print(auth)
+    Controller.Request.request.send_request(args.auth_yaml)
 
 def handle_auth_cookie(args):
     auth = args.auth_yaml

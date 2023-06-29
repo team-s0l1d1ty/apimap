@@ -3,7 +3,7 @@ import Controller.Request.request
 import Controller.Generator.swg
 
 def handle_req(args):
-    Controller.Request.request.send_requests(args.template)
+    Controller.Request.request.handle_req(args.template)
 
 def handle_auth_jwt(args):
     Controller.Request.request.send_request(args.auth_yaml)

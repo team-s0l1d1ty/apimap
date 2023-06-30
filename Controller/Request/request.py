@@ -1,5 +1,6 @@
 import argparse
 import os
+from datetime import datetime
 import yaml,json
 import requests, urllib3
 
@@ -114,7 +115,8 @@ def handle_req(template_path):
             })
             one_result.append({"result":"No response checks defined for this request."})
             all_results.append(one_result)
-    file_path = "Results/results.json"
+    current_time = datetime.now()
+    file_path = "Results/results%s.json" % current_time.strftime("%Y%m%d_%H%M%S")
     with open(file_path,"w") as json_file:
         json.dump(all_results,json_file)
     print('[+] Results are saved in %s' % (os.getcwd() + file_path))

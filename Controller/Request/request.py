@@ -1,6 +1,6 @@
 import argparse
 import os
-import yaml
+import yaml,json
 import requests, urllib3
 
 def send_requests(path):
@@ -36,7 +36,7 @@ def send_request(template_path):
 
             # Send request and add response received into a dictionary
             response = requests.request(proxies=proxies,verify=verify,allow_redirects=allow_redirects, **request_template)
-            responses.append({'response': response, 'response_checks': response_checks})
+            responses.append({'request':request_template,'response': response, 'response_checks': response_checks})
 
         return responses
 
@@ -94,17 +94,31 @@ def validate_request_parameters(request_template):
 
 def handle_req(template_path):
     responses = send_requests(template_path)
+    all_results = []
     for response in responses:
         response_checks = response.get('response_checks')
         if response_checks:
+            one_result = []
+            one_result.append(response['request'])
+            one_result.append({
+                "status_code":response['response'].status_code,
+            })
             for check_result in perform_response_checks(response['response'], response_checks):
-                print(check_result)
-            print('=============\n')
+                one_result.append(check_result)
+            all_results.append(one_result)
         else:
-            print(response)
-            print("No response checks defined for this request.")
-            print('=============\n')
-
+            one_result = []
+            one_result.append(response['request'])
+            one_result.append({
+                "status_code":response['response'].status_code,
+            })
+            one_result.append({"result":"No response checks defined for this request."})
+            all_results.append(one_result)
+    file_path = "Results/results.json"
+    with open(file_path,"w") as json_file:
+        json.dump(all_results,json_file)
+    print('[+] Results are saved in %s' % (os.getcwd() + file_path))
+    print('[+] results.json can be viewed with %s/apimap_data.html' % os.getcwd())
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Send requests and perform response checks.')

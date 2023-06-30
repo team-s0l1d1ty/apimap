@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>APIMAP DATA</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+<div id="logo">
+    <pre>
+    ░█████╗░██████╗░██╗███╗░░░███╗░█████╗░██████╗░
+    ██╔══██╗██╔══██╗██║████╗░████║██╔══██╗██╔══██╗
+    ███████║██████╔╝██║██╔████╔██║███████║██████╔╝
+    ██╔══██║██╔═══╝░██║██║╚██╔╝██║██╔══██║██╔═══╝░
+    ██║░░██║██║░░░░░██║██║░╚═╝░██║██║░░██║██║░░░░░
+    ╚═╝░░╚═╝╚═╝░░░░░╚═╝╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╯
+                       ██████╗░░█████╗░████████╗░█████╗░
+                       ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗
+                       ██║░░██║███████║░░░██║░░░███████║
+                       ██║░░██║██╔══██║░░░██║░░░██╔══██║
+                       ██████╔╝██║░░██║░░░██║░░░██║░░██║
+                       ╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝
+    </pre>
+</div>
+
+<input type="file" id="json-file" accept=".json"><br><br>
+
+<table>
+    <thead id="header-row"></thead>
+    <tbody id="table-body"></tbody>
+</table>
+
+<script>
+    // Function to handle the file selection
+    function handleFileSelect(event) {
+        var file = event.target.files[0];
+
+        // Check if a file is selected
+        if (file) {
+            var reader = new FileReader();
+
+            // Read the file
+            reader.readAsText(file);
+
+            // Handle the file reading completion
+            reader.onload = function(e) {
+                var contents = e.target.result;
+
+                try {
+                    var jsonData = JSON.parse(contents);
+
+                    // Call the function to generate the table
+                    generateTable(jsonData);
+                } catch (error) {
+                    console.error('Error parsing JSON file:', error);
+                }
+            };
+        }
+    }
+
+    // Add an event listener to the file input
+    document.getElementById('json-file').addEventListener('change', handleFileSelect, false);
+
+    // Function to generate the table
+    function generateTable(jsonData) {
+        // Get the header row element
+        var headerRow = document.getElementById('header-row');
+
+        // Clear any existing headers
+        headerRow.innerHTML = '';
+
+        // Create the "Request" header cell
+        var requestHeader = document.createElement('th');
+        requestHeader.textContent = 'Request';
+        headerRow.appendChild(requestHeader);
+
+        // Create the "Response" header cell
+        var responseHeader = document.createElement('th');
+        responseHeader.textContent = 'Response Status';
+        headerRow.appendChild(responseHeader);
+
+        // Loop through the JSON data to generate the remaining column headers
+        for (var i = 2; i < jsonData[0].length; i++) {
+            var checksHeader = document.createElement('th');
+            checksHeader.textContent = 'Checks ' + (i - 2);
+            headerRow.appendChild(checksHeader);
+        }
+
+        // Get the table body element
+        var tableBody = document.getElementById('table-body');
+
+        // Clear any existing rows
+        tableBody.innerHTML = '';
+
+        // Loop through the JSON data to generate the table rows dynamically
+        for (var i = 0; i < jsonData.length; i++) {
+            var row = jsonData[i];
+            var tableRow = document.createElement('tr');
+
+            // Create the "Request" cell
+            var requestCell = document.createElement('td');
+            requestCell.textContent = JSON.stringify(row[0]);
+            tableRow.appendChild(requestCell);
+
+            // Create the "Response" cell
+            var responseCell = document.createElement('td');
+            responseCell.textContent = JSON.stringify(row[1]);
+            tableRow.appendChild(responseCell);
+
+            // Loop through the remaining columns and create cells dynamically
+            for (var j = 2; j < row.length; j++) {
+                var checksCell = document.createElement('td');
+                checksCell.textContent = JSON.stringify(row[j]);
+                tableRow.appendChild(checksCell);
+            }
+
+            tableBody.appendChild(tableRow);
+        }
+    }
+</script>
+</body>
+</html>

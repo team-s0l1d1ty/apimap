@@ -10,6 +10,12 @@
         th, td {
             border: 1px solid black;
             padding: 8px;
+            max-width: 200px; /* Set the maximum width to 200 pixels */
+            overflow: hidden;
+            word-wrap: break-word;
+        }
+        .fixed-size {
+            max-width: 20px;
         }
         #logo {
             display: flex;
@@ -83,7 +89,7 @@
         // Clear any existing headers
         headerRow.innerHTML = '';
 
-        // Create the "Request" header cell
+        // Create the "Template" header cell
         var templateHeader = document.createElement('th');
         templateHeader.textContent = 'Template';
         headerRow.appendChild(templateHeader);

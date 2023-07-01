@@ -1,0 +1,166 @@
+name: basic template with POST GET PUT DELETE
+
+description: to test if we can do POST GET PUT DELETE request methods. 
+
+requests:
+  - url: http://postman-echo.com/get
+    method: GET
+    params:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub
+
+  - url: http://postman-echo.com/post
+    method: GET
+    params:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub
+
+  - url: http://postman-echo.com/post
+    method: POST
+    data:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub
+
+  - url: http://postman-echo.com/post
+    method: POST
+    params:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub
+
+  - url: http://postman-echo.com/get
+    method: POST
+    headers:
+      Content-Type: application/json
+    json:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub
+
+  - url: http://postman-echo.com/put
+    method: PUT
+    data:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub
+
+  - url: http://postman-echo.com/put
+    method: PUT
+    params:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub
+
+  - url: http://postman-echo.com/get
+    method: PUT
+    headers:
+      Content-Type: application/json
+    json:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub
+
+  - url: http://postman-echo.com/delete
+    method: DELETE
+    data:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub
+
+  - url: http://postman-echo.com/delete
+    method: DELETE
+    params:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub
+
+  - url: http://postman-echo.com/get
+    method: DELETE
+    headers:
+      Content-Type: application/json
+    json:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub
+
+  - url: http://postman-echo.com/patch
+    method: PATCH
+    data:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub
+
+  - url: http://postman-echo.com/patch
+    method: PATCH
+    params:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub
+
+  - url: http://postman-echo.com/get
+    method: DELETE
+    headers:
+      Content-Type: application/json
+    json:
+      dummy1: apimap_rocks
+      dummy2: apimap_rocks2
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: apimap_rocks
+          - pattern: GitHub

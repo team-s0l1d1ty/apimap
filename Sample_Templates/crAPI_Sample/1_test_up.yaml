@@ -1,0 +1,14 @@
+name: test up 
+
+description: test connection to crAPI app and mailhog service
+
+requests:
+  - url: http://localhost:8888
+    method: GET
+    response_checks:
+      - status_code: 200
+
+  - url: http://localhost:8025
+    method: GET
+    response_checks:
+      - status_code: 200  

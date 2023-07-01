@@ -21,11 +21,13 @@ def send_request(template_path):
     with open(template_path) as template_file:
         template = yaml.safe_load(template_file)
 
-        requests_template = template['requests']
+        requests_template = template.get('requests',[])
+        name_template = template.get('name', 'Template with No Name')
+        print('[-] Executing %s' % name_template)
+        
         responses = []
         for request_template in requests_template:
             validate_request_parameters(request_template)
-            
             # Extract response_checks and proxies from the request_template
             response_checks = request_template.pop('response_checks', None)
             proxies = request_template.pop('proxies', None)
@@ -37,8 +39,14 @@ def send_request(template_path):
 
             # Send request and add response received into a dictionary
             response = requests.request(proxies=proxies,verify=verify,allow_redirects=allow_redirects, **request_template)
-            responses.append({'request':request_template,'response': response, 'response_checks': response_checks})
-
+            response_dict = {
+                'name':name_template,
+                'request':request_template,
+                'response': response, 
+                'response_checks': response_checks
+                }
+            responses.append(response_dict)
+        print('[+] Completed %s' % name_template)
         return responses
 
 
@@ -100,6 +108,7 @@ def handle_req(template_path):
         response_checks = response.get('response_checks')
         if response_checks:
             one_result = []
+            one_result.append(response['name'])
             one_result.append(response['request'])
             one_result.append({
                 "status_code":response['response'].status_code,
@@ -109,12 +118,14 @@ def handle_req(template_path):
             all_results.append(one_result)
         else:
             one_result = []
+            one_result.append(response['name'])
             one_result.append(response['request'])
             one_result.append({
                 "status_code":response['response'].status_code,
             })
             one_result.append({"result":"No response checks defined for this request."})
             all_results.append(one_result)
+    
     current_time = datetime.now()
     file_path = "Results/results%s.json" % current_time.strftime("%Y%m%d_%H%M%S")
     with open(file_path,"w") as json_file:

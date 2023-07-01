@@ -5,10 +5,17 @@
     <style>
         table {
             border-collapse: collapse;
+            width:100%;
         }
         th, td {
             border: 1px solid black;
             padding: 8px;
+        }
+        #logo {
+            display: flex;
+        }
+        #logo pre {
+            color: #34495E ; /* Set the text color */
         }
     </style>
 </head>
@@ -77,6 +84,11 @@
         headerRow.innerHTML = '';
 
         // Create the "Request" header cell
+        var templateHeader = document.createElement('th');
+        templateHeader.textContent = 'Template';
+        headerRow.appendChild(templateHeader);
+
+        // Create the "Request" header cell
         var requestHeader = document.createElement('th');
         requestHeader.textContent = 'Request';
         headerRow.appendChild(requestHeader);
@@ -87,7 +99,7 @@
         headerRow.appendChild(responseHeader);
 
         // Loop through the JSON data to generate the remaining column headers
-        for (var i = 2; i < jsonData[0].length; i++) {
+        for (var i = 3; i < jsonData[0].length; i++) {
             var checksHeader = document.createElement('th');
             checksHeader.textContent = 'Checks ' + (i - 2);
             headerRow.appendChild(checksHeader);

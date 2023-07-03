@@ -34,6 +34,29 @@ commands = {
             }
         }
     },
+    'inv':{
+        'help': 'API Inventory Operations',
+        'subcommands':{
+            'psm':{
+                'help':'Get a Quick Inventory of APIs in Postman Collection v2.1.0 Directory or File',
+                'args':{
+                    'path':{
+                        'help':'Path to Postman Collection v2.1.0 Directory or File',
+                        'type': str
+                    }
+                }
+            },
+            'swg':{
+                'help':'Path to Swagger Specification v3.0.1 Directory or File',
+                'args':{
+                    'path':{
+                        'help':'Path to Swagger Specification v3.0.1 Directory or File',
+                        'type':str
+                    }
+                }
+            }
+        }
+    },
     'gen': {
         'help': 'YAML generation operations',
         'subcommands': {
@@ -76,15 +99,6 @@ commands = {
                         'args': {
                             'path': {
                                 'help': 'Path for Swagger BOLA generation',
-                                'type': str
-                            }
-                        }
-                    },
-                    'inv': {
-                        'help': 'Generate Swagger inventory for swagger',
-                        'args': {
-                            'path': {
-                                'help': 'Path to swagger documentation',
                                 'type': str
                             }
                         }

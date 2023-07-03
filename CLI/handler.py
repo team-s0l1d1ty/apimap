@@ -1,6 +1,8 @@
 import os
 import Controller.Request.request
 import Controller.Generator.swg
+import Controller.Inventory.psm210, Controller.Inventory.swg301
+
 
 def handle_req(args):
     Controller.Request.request.handle_req(args.template)
@@ -26,11 +28,13 @@ def handle_gen_swg_bola(args):
     path = args.path
     print(path)
 
-def handle_gen_swg_inv(args):
+def handle_inv_swg(args):
     path = args.path
-    if os.path.isfile(path):
-        Controller.Generator.swg.swg_inv(path)
-    
+    Controller.Inventory.swg301.handle_inv_swg(path)
+
+def handle_inv_psm(args):
+    path = args.path
+    Controller.Inventory.psm210.handle_inv_psm(path)    
 
 def handle_commands(args):
     command_handlers = {
@@ -39,11 +43,14 @@ def handle_commands(args):
             'jwt': handle_auth_jwt,
             'cookie': handle_auth_cookie
         },
+        'inv':{
+            'psm': handle_inv_psm,
+            'swg': handle_inv_swg
+        },
         'gen': {
             'jwt': handle_gen_auth_jwt,
             'cookie': handle_gen_auth_cookie,
             'bola': handle_gen_swg_bola,
-            'inv': handle_gen_swg_inv
         }
     }
     command = args.command

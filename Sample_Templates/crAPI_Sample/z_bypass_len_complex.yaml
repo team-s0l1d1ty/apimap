@@ -1,0 +1,19 @@
+name: template for bypassing Sign Up Password Complexity
+
+description: |- 
+              Endpoint /identity/api/auth/signup only checks for length of password but not complexity. 
+              We found out that password complexity checking is only done on frontend. 
+              As such we were able to bypass the frontend complexity check by signing up with the API directly.
+
+requests:
+  - url: http://localhost:8888/identity/api/auth/signup
+    method: POST
+    json:
+      name: pentester
+      email: pentester@example.com
+      number: 990099009900
+      password: 123456
+    response_checks:
+      - status_code: 200
+      - text:
+          - pattern: User registered successfully! Please Login.

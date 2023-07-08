@@ -3,139 +3,180 @@
 <head>
     <title>APIMAP Data</title>
     <style>
-    nav {
-      background-color: #f2f2f2;
-      padding: 10px;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #333;
-      padding: 5px 10px;
-      margin-right: 10px;
-    }
-
-    nav a:hover {
-      background-color: #ddd;
-    }
-        table {
-            border-collapse: collapse;
-            width:100%;
+        nav {
+            background-color: #f2f2f2;
+            padding: 10px;
         }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            max-width: 200px; /* Set the maximum width to 200 pixels */
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            margin-right: 10px;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+        }
+        .collapsible {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            width: 80px;
+            border: none;
+            text-align: center;
+            outline: none;
+            font-size: 12px;
+            border-radius: 5px;
+        }
+
+        .active {
+            background-color: #555;
+        }
+
+        .content {
+            padding: 10px 18px;
+            display: none;
             overflow: hidden;
+            background-color: #f1f1f1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            max-width: 100px;
             word-wrap: break-word;
         }
-        .fixed-size {
-            max-width: 20px;
-        }
     </style>
-</head>
-<body>
-<script src="script/navbar.js"></script>
-<h1>Results</h1>
-<input type="file" id="json-file" accept=".json"><br><br>
-
-<table>
-    <thead id="header-row"></thead>
-    <tbody id="table-body"></tbody>
-</table>
-
-<script>
-    // Function to handle the file selection
-    function handleFileSelect(event) {
-        var file = event.target.files[0];
-
-        // Check if a file is selected
-        if (file) {
-            var reader = new FileReader();
-
-            // Read the file
-            reader.readAsText(file);
-
-            // Handle the file reading completion
-            reader.onload = function(e) {
-                var contents = e.target.result;
-
-                try {
-                    var jsonData = JSON.parse(contents);
-
-                    // Call the function to generate the table
-                    generateTable(jsonData);
-                } catch (error) {
-                    console.error('Error parsing JSON file:', error);
-                }
-            };
-        }
-    }
-
-    // Add an event listener to the file input
-    document.getElementById('json-file').addEventListener('change', handleFileSelect, false);
-
-    // Function to generate the table
-    function generateTable(jsonData) {
-        // Get the header row element
-        var headerRow = document.getElementById('header-row');
-
-        // Clear any existing headers
-        headerRow.innerHTML = '';
-
-        // Create the "Template" header cell
-        var templateHeader = document.createElement('th');
-        templateHeader.textContent = 'Template';
-        headerRow.appendChild(templateHeader);
-
-        // Create the "Request" header cell
-        var requestHeader = document.createElement('th');
-        requestHeader.textContent = 'Request';
-        headerRow.appendChild(requestHeader);
-
-        // Create the "Response" header cell
-        var responseHeader = document.createElement('th');
-        responseHeader.textContent = 'Response Status';
-        headerRow.appendChild(responseHeader);
-
-        // Loop through the JSON data to generate the remaining column headers
-        for (var i = 3; i < jsonData[0].length; i++) {
-            var checksHeader = document.createElement('th');
-            checksHeader.textContent = 'Checks ' + (i - 2);
-            headerRow.appendChild(checksHeader);
+    <script>
+        function toggleContent(element) {
+            if (element.style.display === "block") {
+                element.style.display = "none";
+            } else {
+                element.style.display = "block";
+            }
         }
 
-        // Get the table body element
-        var tableBody = document.getElementById('table-body');
+        function handleFileSelect(event) {
+            var file = event.target.files[0];
 
-        // Clear any existing rows
-        tableBody.innerHTML = '';
-
-        // Loop through the JSON data to generate the table rows dynamically
-        for (var i = 0; i < jsonData.length; i++) {
-            var row = jsonData[i];
-            var tableRow = document.createElement('tr');
-
-            // Create the "Request" cell
-            var requestCell = document.createElement('td');
-            requestCell.textContent = JSON.stringify(row[0]);
-            tableRow.appendChild(requestCell);
-
-            // Create the "Response" cell
-            var responseCell = document.createElement('td');
-            responseCell.textContent = JSON.stringify(row[1]);
-            tableRow.appendChild(responseCell);
-
-            // Loop through the remaining columns and create cells dynamically
-            for (var j = 2; j < row.length; j++) {
-                var checksCell = document.createElement('td');
-                checksCell.textContent = JSON.stringify(row[j]);
-                tableRow.appendChild(checksCell);
+            if (!file) {
+                alert("Please select a file.");
+                return;
             }
 
-            tableBody.appendChild(tableRow);
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var jsonData = event.target.result;
+                try {
+                    var data = JSON.parse(jsonData);
+                    generateTable(data);
+                } catch (error) {
+                    alert("Invalid JSON data in the file.");
+                }
+            };
+            reader.readAsText(file);
         }
-    }
-</script>
+
+        function generateTable(data) {
+            var container = document.getElementById("endpoints-container");
+
+            // Clear previous table data
+            container.innerHTML = "";
+
+            // Create table
+            var table = document.createElement("table");
+
+            // Create table headers
+            var headers = ["Template", "Request", "Response", "Checks"];
+            var headerRow = document.createElement("tr");
+            for (var j = 0; j < headers.length; j++) {
+                var headerCell = document.createElement("th");
+                headerCell.textContent = headers[j];
+                headerRow.appendChild(headerCell);
+            }
+            table.appendChild(headerRow);
+
+            // Iterate over each item in the data
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+
+                // Create table row
+                var row = document.createElement("tr");
+
+                // Create cells for Template, Request, Response, and Checks columns
+                for (var j = 0; j < headers.length; j++) {
+                    var cell = document.createElement("td");
+                    var content = document.createElement("div");
+
+                    if (j === 1 || j === 2) {
+                        // Handle Request and Response columns
+                        content.classList.add("collapsible");
+                        content.textContent = "Expand";
+                        cell.appendChild(content);
+
+                        // Create inner content div for collapsible data
+                        var innerContentDiv = document.createElement("div");
+                        innerContentDiv.classList.add("content");
+
+                        // Create pre element for formatting JSON data
+                        var pre = document.createElement("pre");
+                        pre.style.whiteSpace = "pre-wrap";
+                        var jsonContent = document.createTextNode(JSON.stringify(item[j], null, 2));
+                        pre.appendChild(jsonContent);
+
+                        innerContentDiv.appendChild(pre);
+                        cell.appendChild(innerContentDiv);
+                    } else if (j === 3) {
+                        // Handle Checks column
+                        var checksList = document.createElement("ul");
+                        checksList.classList.add("checks-list");
+
+                        for (var k = 0; k < item.length - 3; k++) {
+                            var checkItem = item[k + 3];
+
+                            var checkListItem = document.createElement("li");
+                            checkListItem.textContent = JSON.stringify(checkItem, null, 2);
+                            checksList.appendChild(checkListItem);
+                        }
+
+                        cell.appendChild(checksList);
+                    } else {
+                        // Handle Template column
+                        content.textContent = item[j] !== undefined ? item[j] : "";
+                        cell.appendChild(content);
+                    }
+
+                    row.appendChild(cell);
+                }
+
+                // Add row to the table
+                table.appendChild(row);
+            }
+
+            container.appendChild(table);
+
+            // Add click event listeners to toggle content
+            var collapsibleButtons = document.getElementsByClassName("collapsible");
+            for (var k = 0; k < collapsibleButtons.length; k++) {
+                collapsibleButtons[k].addEventListener("click", function () {
+                    toggleContent(this.parentNode.querySelector(".content"));
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <script src="script/navbar.js"></script>
+    <h2>Results</h2>
+    <input type="file" id="jsonFile" accept=".json" onchange="handleFileSelect(event)">
+    <div id="endpoints-container"></div>
 </body>
 </html>

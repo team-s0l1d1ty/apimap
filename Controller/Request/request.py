@@ -113,7 +113,9 @@ def handle_req(template_path):
             one_result.append(response['name'])
             one_result.append(response['request'])
             one_result.append({
-                "status_code":response['response'].status_code
+                "status_code":response['response'].status_code,
+                "headers": str(response['response'].headers),
+                "content": response['response'].text
             })
             for check_result in perform_response_checks(response['response'], response_checks):
                 one_result.append(check_result)
@@ -123,7 +125,9 @@ def handle_req(template_path):
             one_result.append(response['name'])
             one_result.append(response['request'])
             one_result.append({
-                "status_code":response['response'].status_code
+                "status_code":response['response'].status_code,
+                "headers": str(response['response'].headers),
+                "content":  response['response'].text
             })
             one_result.append({"result":"No response checks defined for this request."})
             all_results.append(one_result)

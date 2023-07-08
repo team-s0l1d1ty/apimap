@@ -52,6 +52,8 @@ coverage.xml
 cover/
 test_yaml/
 results*.json
+*_inventory*.json
+
 
 # Translations
 *.mo

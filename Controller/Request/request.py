@@ -129,11 +129,11 @@ def handle_req(template_path):
             all_results.append(one_result)
     
     current_time = datetime.now()
-    file_path = "Results/results%s.json" % current_time.strftime("%Y%m%d_%H%M%S")
+    file_path = "Output/results_%s.json" % current_time.strftime("%Y%m%d_%H%M%S")
     with open(file_path,"w") as json_file:
         json.dump(all_results,json_file)
-    print('[+] Results are saved in %s' % (os.getcwd() + file_path))
-    print('[+] results.json can be viewed with %s/apimap_data.html' % os.getcwd())
+    print('[+] Results are saved in %s' % (file_path))
+    print('[+] results.json can be viewed with /Output/Pages/index.html')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Send requests and perform response checks.')

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>APIMAP Data</title>
+    <style>
+    nav {
+      background-color: #f2f2f2;
+      padding: 10px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      padding: 5px 10px;
+      margin-right: 10px;
+    }
+
+    nav a:hover {
+      background-color: #ddd;
+    }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        max-width: 200px;
+      }
+
+      .collapsible-btn {
+        background-color: #777;
+        color: white;
+        cursor: pointer;
+        padding: 5px 10px;
+        border: none;
+        outline: none;
+        text-align: left;
+        font-size: 14px;
+      }
+
+      .collapsible-content {
+        display: none;
+        padding-left: 20px;
+      }
+
+      .active {
+        background-color: #555;
+      }
+    </style>
+    <script>
+      function handleFileChange(event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function(event) {
+          var data = JSON.parse(event.target.result);
+          generateTable(data);
+        };
+        reader.readAsText(file);
+      }
+
+      function toggleContent(button) {
+        button.classList.toggle("active");
+        var content = button.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      }
+
+      function generateTable(data) {
+        var tableBody = document.getElementById("table-body");
+        tableBody.innerHTML = "";
+        var totalEndpointCount = 0;
+        var totalMethodCount = 0;
+        for (var i = 0; i < data.length; i++) {
+          var item = data[i];
+          var row = document.createElement("tr");
+          var fileCell = document.createElement("td");
+          fileCell.textContent = item.file;
+          row.appendChild(fileCell);
+          var endpointsCell = document.createElement("td");
+          var button = document.createElement("button");
+          button.classList.add("collapsible-btn");
+          button.textContent = "Expand";
+          endpointsCell.appendChild(button);
+          var contentDiv = document.createElement("div");
+          contentDiv.classList.add("collapsible-content");
+          var ul = document.createElement("ul");
+          for (var endpoint in item.endpoints) {
+            if (item.endpoints.hasOwnProperty(endpoint)) {
+              var methods = item.endpoints[endpoint];
+              var li = document.createElement("li");
+              li.textContent = endpoint + ": " + methods.join(", ");
+              ul.appendChild(li);
+            }
+          }
+          contentDiv.appendChild(ul);
+          endpointsCell.appendChild(contentDiv);
+          row.appendChild(endpointsCell);
+          var endpointCountCell = document.createElement("td");
+          endpointCountCell.textContent = item.endpoint_count;
+          row.appendChild(endpointCountCell);
+          var methodCountCell = document.createElement("td");
+          methodCountCell.textContent = item.method_count;
+          row.appendChild(methodCountCell);
+          tableBody.appendChild(row);
+          button.addEventListener("click", function() {
+            toggleContent(this);
+          });
+          totalEndpointCount += parseInt(item.endpoint_count);
+          totalMethodCount += parseInt(item.method_count);
+        }
+        var totalRow = document.createElement("tr");
+        var totalLabelCell = document.createElement("td");
+        totalLabelCell.textContent = "Total";
+        totalLabelCell.colSpan = 2;
+        totalRow.appendChild(totalLabelCell);
+        var totalEndpointsCell = document.createElement("td");
+        totalEndpointsCell.textContent = totalEndpointCount;
+        totalRow.appendChild(totalEndpointsCell);
+        var totalMethodsCell = document.createElement("td");
+        totalMethodsCell.textContent = totalMethodCount;
+        totalRow.appendChild(totalMethodsCell);
+        tableBody.appendChild(totalRow);
+      }
+    </script>
+  </head>
+  <body>
+    <script src="script/navbar.js"></script>
+    <h1>API Endpoints</h1>
+    <input type="file" id="json-file" accept=".json">
+    <br>
+    <br>
+    <table>
+      <thead>
+        <tr>
+          <th>File</th>
+          <th>Endpoints</th>
+          <th>Endpoint Count</th>
+          <th>Method Count</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- Table rows will be dynamically generated here -->
+      </tbody>
+    </table>
+    <script>
+      var fileInput = document.getElementById("json-file");
+      fileInput.addEventListener("change", handleFileChange);
+    </script>
+  </body>
+</html>

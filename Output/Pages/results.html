@@ -1,8 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>APIMAP DATA</title>
+    <title>APIMAP Data</title>
     <style>
+    nav {
+      background-color: #f2f2f2;
+      padding: 10px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      padding: 5px 10px;
+      margin-right: 10px;
+    }
+
+    nav a:hover {
+      background-color: #ddd;
+    }
         table {
             border-collapse: collapse;
             width:100%;
@@ -17,32 +32,11 @@
         .fixed-size {
             max-width: 20px;
         }
-        #logo {
-            display: flex;
-        }
-        #logo pre {
-            color: #34495E ; /* Set the text color */
-        }
     </style>
 </head>
 <body>
-<div id="logo">
-    <pre>
-    ░█████╗░██████╗░██╗███╗░░░███╗░█████╗░██████╗░
-    ██╔══██╗██╔══██╗██║████╗░████║██╔══██╗██╔══██╗
-    ███████║██████╔╝██║██╔████╔██║███████║██████╔╝
-    ██╔══██║██╔═══╝░██║██║╚██╔╝██║██╔══██║██╔═══╝░
-    ██║░░██║██║░░░░░██║██║░╚═╝░██║██║░░██║██║░░░░░
-    ╚═╝░░╚═╝╚═╝░░░░░╚═╝╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╯
-                       ██████╗░░█████╗░████████╗░█████╗░
-                       ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗
-                       ██║░░██║███████║░░░██║░░░███████║
-                       ██║░░██║██╔══██║░░░██║░░░██╔══██║
-                       ██████╔╝██║░░██║░░░██║░░░██║░░██║
-                       ╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝
-    </pre>
-</div>
-
+<script src="script/navbar.js"></script>
+<h1>Results</h1>
 <input type="file" id="json-file" accept=".json"><br><br>
 
 <table>

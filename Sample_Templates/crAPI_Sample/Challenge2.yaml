@@ -1,7 +1,7 @@
 name: BOLA template for challenge 2 
 
 description: |- 
-              Endpoint /workshop/api/mechanic/mechanic_report?report_id=6 was leaked when we send a mechanic report.
+              Endpoint /workshop/api/mechanic/mechanic_report?report_id={report_id} was leaked when we send a mechanic report.
               We realised no authentication was required to access report.
               The following will test the endpoint for the resultant BOLA vulnerability found by:
                  checking for status_code as it was observed that status_code 200 is the code for successful query. 

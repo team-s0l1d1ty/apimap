@@ -27,9 +27,9 @@ requests:
   - url: http://localhost:8888/workshop/api/shop/products
     method: GET
     headers:
-      Authorization: {add your own jwt}
+      Authorization: Bearer {add your own jwt}
     response_checks:
       - status_code: 200
       - text:
-          - pattern: '"credit":{value to check}'
+          - pattern: '"credit":{add your own value to check}'
       

@@ -10,6 +10,7 @@ def send_requests(path):
     elif os.path.isdir(path):
         responses = []
         for filename in os.listdir(path):
+            # if filename.endswith('.json'):
             if filename.endswith('.yaml') or filename.endswith('.yml'):
                 template_path = os.path.join(path, filename)
                 response = send_request(template_path)
@@ -20,6 +21,7 @@ def send_requests(path):
 def send_request(template_path):
     with open(template_path) as template_file:
         template = yaml.safe_load(template_file)
+        # template = json.load(template_file)
 
         requests_template = template.get('requests',[])
         name_template = template.get('name', 'Template with No Name')

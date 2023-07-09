@@ -9,6 +9,8 @@
 
 APIMAP is a python based tool designed to automate API security testing. It utilizes YAML as the scanning template for defining security checks and tests against target APIs. This scanner is targeted but not limited to API security testing and aims to be the python HTTP scanner. It allows user to easily generate YAML templates using OpenAPI Specifications and Postman Collections.
 
+<img src="https://github.com/team-s0l1d1ty/apimap/assets/88809233/d8f3f896-c35a-4bfd-bca4-45cf050d3bc4" width="800">
+
 ## Key Features
 1. **YAML Scanning Template** : APIMAP leverages YAML-based scanning templates allowing users to customise their own security checks and tests.
 2. **OpenAPI and Postman Collection Support** : APIMAP has a template generation module that can generate basic YAML scanning template using OpenAPI specification or Postman Collections JSON. 

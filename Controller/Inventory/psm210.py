@@ -70,12 +70,12 @@ def extract_file_folder(path):
                     "method_count": sum(len(methods) for methods in endpoints.values())
                 })
                 file_endpoints = len(endpoints)
-                print(f"{file_path}: {file_endpoints} endpoints")
+                print(f"[+] {file_path}: {file_endpoints} endpoints")
                 total_endpoints += file_endpoints
                 total_methods += sum(len(methods) for methods in endpoints.values())
 
-    print(f"\nOverall Endpoint Count: {total_endpoints}")
-    print(f"Overall Method Count: {total_methods}")
+    print(f"[+] Overall Endpoint Count: {total_endpoints}")
+    print(f"[+] Overall Method Count: {total_methods}")
 
     return extracted_data
 

@@ -54,6 +54,11 @@
             max-width: 100px;
             word-wrap: break-word;
         }
+
+        .search-input {
+            padding: 5px 10px;
+            margin-left: 10px;
+        }
     </style>
     <script>
         function toggleContent(element) {
@@ -86,7 +91,7 @@
         }
 
         function generateTable(data) {
-            var container = document.getElementById("endpoints-container");
+            var container = document.getElementById("results-container");
 
             // Clear previous table data
             container.innerHTML = "";
@@ -97,11 +102,31 @@
             // Create table headers
             var headers = ["Template", "Request", "Response", "Checks"];
             var headerRow = document.createElement("tr");
-            for (var j = 0; j < headers.length; j++) {
+
+            // Add search filter for Template column
+            var searchCell = document.createElement("th");
+            var searchLabel = document.createElement("label");
+            searchLabel.textContent = "Template";
+            var searchInput = document.createElement("input");
+            searchInput.type = "text";
+            searchInput.id = "template-search-input";
+            searchInput.placeholder = "Search Template";
+            searchInput.classList.add("search-input");
+            searchInput.addEventListener("input", function () {
+                filterTable(this.value.toLowerCase(), 0); // Pass 0 as the index of the Template column
+            });
+            searchLabel.setAttribute("for", "template-search-input");
+            searchCell.appendChild(searchLabel);
+            searchCell.appendChild(searchInput);
+            headerRow.appendChild(searchCell);
+
+            // Create the rest of the header cells
+            for (var j = 1; j < headers.length; j++) {
                 var headerCell = document.createElement("th");
                 headerCell.textContent = headers[j];
                 headerRow.appendChild(headerCell);
             }
+
             table.appendChild(headerRow);
 
             // Iterate over each item in the data
@@ -171,12 +196,29 @@
                 });
             }
         }
+
+        function filterTable(searchTerm, columnIndex) {
+            var table = document.getElementById("results-container").querySelector("table");
+            var rows = table.getElementsByTagName("tr");
+
+            for (var i = 1; i < rows.length; i++) {
+                var cell = rows[i].getElementsByTagName("td")[columnIndex];
+                if (cell) {
+                    var content = cell.textContent || cell.innerText;
+                    if (content.toLowerCase().indexOf(searchTerm) > -1) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
     </script>
 </head>
 <body>
     <script src="script/navbar.js"></script>
     <h2>Results</h2>
     <input type="file" id="jsonFile" accept=".json" onchange="handleFileSelect(event)">
-    <div id="endpoints-container"></div>
+    <div id="results-container"></div>
 </body>
 </html>
